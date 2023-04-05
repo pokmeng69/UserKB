@@ -18,6 +18,9 @@ Route::get('/', [Login::class, 'Login']);
 //layout Home
 Route::get('/Home', [AdminController::class, 'HomeAdmin']);
 
+//register
+Route::get('/reg', [Login::class, 'Reg']);
+
 //get category
 Route::get('/AddCategory', [AdminController::class, 'ViewCategory']);
 //get article

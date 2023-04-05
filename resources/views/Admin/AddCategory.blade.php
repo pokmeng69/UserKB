@@ -7,11 +7,15 @@
             <center><h5 class="m-0 font-weight-bold text-primary">Add Category</h5></center>
         </div>
         <div class="card-body">
-          <form action="{{ url('AddCategory') }}" method="POST">
+          <form action="{{ url('AddCategory') }}" method="POST" enctype="multipart/form-data">
             @csrf
               <div class="form-group">
                 <label for="AddCategory">Add Category</label>
                 <input type="Text" class="form-control" id="Category_Name" name="Category_Name" placeholder="Enter Category">
+              </div>
+              <div class="form-group">
+                <label for="add image">Add Image</label><br>
+                <input type="file" class="form-control" required name="imagess" id="imagess">
               </div>
             <button type="submit" class="btn btn-primary">Submit</button>
           </form>
@@ -24,8 +28,8 @@
             <center><h5 class="m-0 font-weight-bold text-primary">List Category</h5></center>
         </div>
         <div class="card-body">
-        <table class="table table-bordered">
-          <thead class="table-primary">
+        <table class="table ">
+          <thead class="table">
             <tr>
                 <th scope="col">Id</th>
                 <th scope="col">Category</th>
@@ -77,7 +81,7 @@
 <script>
   //ajax
   $(document).on('click','.open_modal',function(){
-        var url = "http://127.0.0.1:8082/category/edit";
+        var url = "http://localhost:8080/category/edit";
         var id= $(this).val();
         $.get(url + '/' + id, function (data) {
             //success data

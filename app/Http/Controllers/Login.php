@@ -9,14 +9,18 @@ use Session;
 
 class Login extends Controller
 {
+    //reg
+    public function Reg()
+    {
+        return view('auth.register');
+    }
     //login
-    
     public function login()
     {
         if (Auth::check()) {
             return redirect('Home');
         }else{
-            return view('login');
+            return view('Login');
         }
     }
     public function actionlogin(Request $request)

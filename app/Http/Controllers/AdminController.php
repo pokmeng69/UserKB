@@ -77,6 +77,13 @@ class AdminController extends Controller
     {
         $category = new category;
         $category->Category_Name = $request->input('Category_Name');
+        if ($request->hasFile('imagess')) {
+            $image = $request->file('imagess');
+            $image_name = time().'.'.$image->getClientOriginalExtension();
+            $destinationPath = base_path('/public/media');
+            $image->move($destinationPath, $image_name);
+        }
+        $category->image =  $image_name;
         $category->save();
         return redirect()->back()->with('status','Category Added Successfully');
     }

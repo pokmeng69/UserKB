@@ -24,7 +24,6 @@
                         <label>Isi Artikel</label>
                         <textarea class="form-control" id="editor1" name="content_article" rows="15"></textarea>
                     </div>
-                   
                     <div class="form-group">
                         <input type="hidden" name="created_at" value="{{ now()->format('Y-m-d H:i:s') }}">
                     </div>
@@ -39,45 +38,29 @@
   @endsection
 
   @section('javascript')
-  <script type="text/javascript">
-    CKEDITOR.replace('editor1', {
-        filebrowserUploadUrl: "{{route('ckeditor.upload', ['_token' => csrf_token() ])}}",
-        filebrowserUploadMethod: 'form'
-    });
-    CKEDITOR.on('instanceReady', function (ev) {
-    ev.editor.dataProcessor.htmlFilter.addRules( {
-        elements : {
-            img: function( el ) {
-                // Add bootstrap "img-responsive" class to each inserted image
-                el.addClass('img-fluid');
-                // Remove inline "height" and "width" styles and
-                // replace them with their attribute counterparts.
-                // This ensures that the 'img-responsive' class works
-                var style = el.attributes.style;
-                if (style) {
-                    // Get the width from the style.
-                    var match = /(?:^|\s)width\s*:\s*(\d+)px/i.exec(style),
-                        width = match && match[1];
-                    // Get the height from the style.
-                    match = /(?:^|\s)height\s*:\s*(\d+)px/i.exec(style);
-                    var height = match && match[1];
-                    // Replace the width
-                    if (width) {
-                        el.attributes.style = el.attributes.style.replace(/(?:^|\s)width\s*:\s*(\d+)px;?/i, '');
-                        el.attributes.width = width;
-                    }
-                    // Replace the height
-                    if (height) {
-                        el.attributes.style = el.attributes.style.replace(/(?:^|\s)height\s*:\s*(\d+)px;?/i, '');
-                        el.attributes.height = height;
-                    }
-                }
-                // Remove the style tag if it is empty
-                if (!el.attributes.style)
-                    delete el.attributes.style;
-            }
-        }
-    });
-});
-  </script>
+           <script>
+                // Replace the <textarea id="editor1"> with a CKEditor 4
+                // instance, using default configuration.
+                CKEDITOR.replace( 'editor1' );
+                CKEDITOR.on("instanceReady", function(event) {
+                    event.editor.on("beforeCommandExec", function(event) {
+                        // Show the paste dialog for the paste buttons and right-click paste
+                        if (event.data.name == "paste") {
+                            event.editor._.forcePasteDialog = true;
+                        }
+                        // Don't show the paste dialog for Ctrl+Shift+V
+                        if (event.data.name == "pastetext" && event.data.commandData.from == "keystrokeHandler") {
+                            event.cancel();
+                        }
+                    })
+                });
+                CKEDITOR.editorConfig = function( config ) {    
+                    config.allowedContent = true;
+                    config.extraAllowedContent = 'dl dt dd';
+                    config.allowedContent = 'u em strong ul li;a[!href,target]';
+                    config.disallowedContent = 'a[target]';
+                    config.disallowedContent = 'a';
+                    config.disallowedContent = 'img{width,height}';
+                };
+            </script>
   @endsection
