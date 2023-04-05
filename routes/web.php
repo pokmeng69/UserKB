@@ -19,7 +19,7 @@ Route::get('/', [Login::class, 'Login']);
 Route::get('/Home', [AdminController::class, 'HomeAdmin']);
 
 //register
-Route::get('/reg', [Login::class, 'Reg']);
+//Route::get('/reg', [Login::class, 'Reg']);
 
 //get category
 Route::get('/AddCategory', [AdminController::class, 'ViewCategory']);
